@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Secrets: never commit these
+.env
+.env.*
+!.env.example
+
+# Node (for later milestones)
+node_modules/
+.next/
+
+# macOS
+.DS_Store
+
+# ML artifacts (large files)
+*.pkl
+*.joblib
+models/
