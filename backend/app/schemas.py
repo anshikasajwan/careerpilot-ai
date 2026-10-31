@@ -4,6 +4,8 @@ Pydantic validates data automatically: if a request does not match the
 model, FastAPI answers with a clear 422 error and never runs our code.
 """
 
+from typing import Literal
+
 from pydantic import BaseModel, ConfigDict, Field
 
 MIN_TEXT_LENGTH = 20
@@ -25,6 +27,8 @@ class MatchRequest(BaseModel):
     job_text: str = Field(
         ..., min_length=MIN_TEXT_LENGTH, max_length=MAX_TEXT_LENGTH
     )
+    # Only these two values are accepted; anything else gets a 422.
+    method: Literal["keyword", "semantic"] = "keyword"
 
 
 class MatchResponse(BaseModel):

@@ -6,14 +6,23 @@ nor the ML code needs to know about the other.
 
 from app.schemas import MatchRequest, MatchResponse
 from ml.baseline import score_match
+from ml.embeddings import MODEL_NAME, Embedder, semantic_score
 
-METHOD_NAME = "keyword-overlap-baseline"
+KEYWORD_METHOD_NAME = "keyword-overlap-baseline"
+SEMANTIC_METHOD_NAME = f"semantic-{MODEL_NAME.split('/')[-1]}"
 
 
-def preview_match(request: MatchRequest) -> MatchResponse:
+def preview_match(request: MatchRequest, embedder: Embedder) -> MatchResponse:
+    if request.method == "semantic":
+        score = semantic_score(request.resume_text, request.job_text, embedder)
+        # A meaning-based score has no keyword list to show.
+        return MatchResponse(
+            score=score, shared_keywords=[], method=SEMANTIC_METHOD_NAME
+        )
+
     result = score_match(request.resume_text, request.job_text)
     return MatchResponse(
         score=result.score,
         shared_keywords=result.shared_keywords,
-        method=METHOD_NAME,
+        method=KEYWORD_METHOD_NAME,
     )

@@ -1,0 +1,4 @@
+# Heavy ML dependencies (PyTorch is installed as part of sentence-transformers).
+# Optional: the API and keyword matching work without these.
+-r requirements.txt
+sentence-transformers>=3.0
